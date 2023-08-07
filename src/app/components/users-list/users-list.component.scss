@@ -1,0 +1,24 @@
+@import '../../app.component.scss';
+
+#tableListUsers {
+    .mat-mdc-row {
+        &:hover {
+            background-color: $light-gray;
+            cursor: pointer;
+        }
+
+        .mat-icon {
+            margin: 0;
+        }
+
+        .mat-mdc-cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}
+
+.btn-create-item {
+    margin-bottom: 1em;
+}

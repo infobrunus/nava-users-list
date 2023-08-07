@@ -1,0 +1,45 @@
+<form #itemForm="ngForm">
+    <h2>Edit Item</h2>
+    <div>
+        <mat-form-field>
+            <mat-label>You are:</mat-label>
+            <mat-select matNativeControl required [formControl]="selectFormControl" [(ngModel)]="user.title" (ngModelChange)="onUserChange(user)">
+                <mat-option *ngFor="let title of titleOptions" [value]="title">
+                    {{ title }}
+                </mat-option>
+                <mat-error *ngIf="selectFormControl.hasError('required')">
+                    This field is required
+                  </mat-error>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input matInput id="name" type="text" [(ngModel)]="user.firstName" name="firstName" required (ngModelChange)="onUserChange(user)"
+                #nameField="ngModel" minlength="3">
+            <mat-error *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)">
+                Name must have at least 3 characters.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input matInput id="name" type="text" [(ngModel)]="user.lastName" name="lastName" required (ngModelChange)="onUserChange(user)"
+                #nameField="ngModel" minlength="2">
+            <mat-error *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)">
+                Name must have at least 3 characters.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput id="email" type="email" [(ngModel)]="user.email" name="email" required (ngModelChange)="onUserChange(user)"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" #emailField="ngModel">
+            <mat-label>Email</mat-label>
+            <mat-error *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)">
+              Email must be a valid email address.
+            </mat-error>
+          </mat-form-field>
+    </div>
+    <div class="buttons-area">
+        <button mat-raised-button color="accent" title="Back to List" mat-button [routerLink]="['/list']"><mat-icon
+                aria-hidden="false" aria-label="Back to List" fontIcon="backspace"></mat-icon>Back to List
+        </button>
+    </div>
+</form>
