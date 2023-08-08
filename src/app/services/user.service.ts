@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from '../models/user.interface';
 import Swal from 'sweetalert2';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,16 @@ export class UserService {
   totalItems = 0;
   currentPage = 1;
   itemsPerPage = 10;
+  
+  createFormControlWithValidation(validators: any[] = []): FormControl {
+    return new FormControl('', [...validators, Validators.required]);
+  }
+
+  titleFormControl = this.createFormControlWithValidation();
+  genderFormControl = this.createFormControlWithValidation();
+  birthdateFormControl = this.createFormControlWithValidation();
+  titleOptions: string[] = ['mr', 'ms', 'mrs', 'miss', 'dr'];
+  genderOptions: string[] = ['male', 'female', 'other'];
 
   constructor(private router: Router, private snackBar: MatSnackBar) { }
 

@@ -1,6 +1,10 @@
 @import '../../app.component.scss';
 
 #tableListUsers {
+    margin-bottom: 2em;
+    .view-user-button {
+        background-color: $light-blue;
+    }
     .mat-mdc-row {
         &:hover {
             background-color: $light-gray;

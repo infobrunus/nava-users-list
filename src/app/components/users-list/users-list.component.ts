@@ -4,6 +4,8 @@ import { User } from '../../models/user.interface';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { SweetAlertResult } from 'sweetalert2';
+import { PageEvent } from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-users-list',
@@ -15,7 +17,13 @@ export class UsersListComponent {
   isLoaded: Boolean = false;
   currentPage = 0;
   itemsPerPage = 10;
-  totalItems = this.userService.totalItems;
+  totalItems = 0;
+
+  handlePageEvent(e: PageEvent) {
+    this.itemsPerPage = e.pageSize;
+    this.currentPage = e.pageIndex;
+    this.getItems();
+  }
 
   constructor(private userService: UserService, private router: Router) {
     this.getItems();
@@ -23,6 +31,7 @@ export class UsersListComponent {
 
   async getItems(): Promise<void> {
     this.usersList = await this.userService.getUsersList(this.currentPage, this.itemsPerPage);
+    this.totalItems = this.userService.totalItems;
     this.isLoaded = true;
   }
 
@@ -54,6 +63,7 @@ export class UsersListComponent {
   }
 
   async nextPage(): Promise<void> {
+    debugger
     if (this.currentPage < this.totalPages()) {
       this.currentPage++;
       await this.getItems();

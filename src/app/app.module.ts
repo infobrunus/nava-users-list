@@ -14,7 +14,13 @@ import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullNamePipe } from './pipes/fullname.pipe';
+import { DateFormatPipe } from './pipes/dateformat.pipe';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
 
 @NgModule({
   declarations: [
@@ -23,7 +29,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     UserCreateComponent,
     UserEditComponent,
     UserDetailsComponent,
-    FullNamePipe
+    FullNamePipe,
+    DateFormatPipe 
   ],
   imports: [
     CommonModule,
@@ -33,7 +40,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMaskModule.forRoot(maskConfig),
   ],
   providers: [],
   bootstrap: [AppComponent]

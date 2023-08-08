@@ -1,29 +1,42 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../models/user.interface';
 import { UserService } from '../../services/user.service';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
-  styleUrls: ['./user-create.component.scss']
+  styleUrls: ['./user-create.component.scss'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ]
 })
 export class UserCreateComponent {
-
-  titleOptions: string[] = ["mr", "ms", "mrs", "miss", "dr"];
 
   newUser: User = {
     id: '',
     title: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    gender: '',
+    phone: '',
+    dateOfBirth: ''
   };
 
-  constructor(private router: Router, private userService: UserService) { }
-
-  selectFormControl = new FormControl('', Validators.required);
+  constructor(public  userService: UserService) { }
 
   async onSubmit(): Promise<void> {
     try {

@@ -2,14 +2,31 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.interface';
 import { UserService } from '../../services/user.service';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  },
+};
 
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.scss']
+  styleUrls: ['./user-edit.component.scss'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ]
 })
 export class UserEditComponent implements OnInit, OnDestroy {
   user: User = {
@@ -17,17 +34,18 @@ export class UserEditComponent implements OnInit, OnDestroy {
     title: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    gender: '',
+    phone: '',
+    dateOfBirth: ''
   };
 
   isLoaded: Boolean = false;
+  isFormInitializing: Boolean = true;
   private destroy$ = new Subject<void>();
   private updateUserSubject = new Subject<User>();
 
-  constructor(private route: ActivatedRoute, private userService: UserService) { }
-
-  selectFormControl = new FormControl('', Validators.required);
-  titleOptions: string[] = ["mr", "ms", "mrs", "miss", "dr"];
+  constructor(private route: ActivatedRoute, public  userService: UserService) { }
 
   ngOnInit(): void {
 
@@ -40,13 +58,18 @@ export class UserEditComponent implements OnInit, OnDestroy {
         })
         .catch(error => {
           console.error('User not found:', error);
-          this.isLoaded = true;
         });
     });
 
     this.updateUserSubject
-    .pipe(debounceTime(500), takeUntil(this.destroy$))
-    .subscribe((updatedUser) => this.updateUser());
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe((updatedUser) => {
+        if (!this.isFormInitializing) {
+          this.updateUser(updatedUser);
+        } else {
+          this.isFormInitializing = false; 
+        }
+      });
 
   }
 
@@ -55,12 +78,20 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  onDateChange(type: string, event: MatDatepickerInputEvent<Date>) {
+    let newDateFormattedISO = (event.value!).toISOString();
+    this.user.dateOfBirth = newDateFormattedISO;
+    this.updateUser(this.user);
+  }
+
   onUserChange(updatedUser: User): void {
+    //Using debounce to prevent too many requests to server
     this.updateUserSubject.next(this.user);
   }
 
-  async updateUser(): Promise<void> {
-    await this.userService.updateUser(this.user);
+  async updateUser(updatedUser: User): Promise<void> {
+    debugger
+    await this.userService.updateUser(updatedUser);
   }
 
 }

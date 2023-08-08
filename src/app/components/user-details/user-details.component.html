@@ -1,29 +1,43 @@
-<mat-list *ngIf="user; else emptyList">
-    <h1>User Details</h1>
-    <mat-list-item>
-        <span matListItemTitle>ID:</span>
-        <span matListItemLine>{{ user?.id }}</span>
-    </mat-list-item>
-    <mat-list-item>
-        <span matListItemTitle>Name</span>
-        <span matListItemLine>{{ user | fullName | titlecase }} </span>
-    </mat-list-item>
-    <mat-list-item>
-        <span matListItemTitle>Email</span>
-        <span matListItemLine>{{ user?.email }}</span>
-    </mat-list-item>
-</mat-list>
+<div id="userDetais">
+    <mat-list *ngIf="user; else emptyList">
+        <h1>User Details</h1>
+        <mat-list-item>
+            <span matListItemTitle>ID</span>
+            <span matListItemLine>{{ user?.id }}</span>
+        </mat-list-item>
+        <mat-list-item>
+            <span matListItemTitle>Full Name</span>
+            <span matListItemLine>{{ user | fullName | titlecase }} </span>
+        </mat-list-item>
+        <mat-list-item>
+            <span matListItemTitle>Gender</span>
+            <span matListItemLine>{{ user?.gender | titlecase }} </span>
+        </mat-list-item>
+        <mat-list-item>
+            <span matListItemTitle>Email</span>
+            <span matListItemLine>{{ user?.email }}</span>
+        </mat-list-item>
+        <mat-list-item>
+            <span matListItemTitle>Phone</span>
+            <span matListItemLine>{{ user?.phone }}</span>
+        </mat-list-item>
+        <mat-list-item>
+            <span matListItemTitle>Date of Birth</span>
+            <span matListItemLine>{{ user | dateFormat }}</span>
+        </mat-list-item>
+    </mat-list>
 
-<button mat-raised-button color="accent" title="Back to List" mat-button
-    [routerLink]="['/list']"><mat-icon aria-hidden="false" aria-label="Back to List"
-        fontIcon="backspace"></mat-icon>Back to List
-</button>
 
-<ng-template #emptyList>
-    <div *ngIf="isLoaded">
-        <span>User not found.</span>
-    </div>
-    <div *ngIf="!isLoaded" class="loading-spinner">
-        <mat-spinner></mat-spinner>
-    </div>
-</ng-template>
+    <button mat-raised-button color="accent" title="Back to List" mat-button [routerLink]="['/list']"><mat-icon
+            aria-hidden="false" aria-label="Back to List" fontIcon="backspace"></mat-icon>Back to List
+    </button>
+
+    <ng-template #emptyList>
+        <div *ngIf="isLoaded">
+            <span>User not found.</span>
+        </div>
+        <div *ngIf="!isLoaded" class="loading-spinner">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-template>
+</div>

@@ -10,9 +10,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatSelectModule} from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateModule } from '@angular/material-moment-adapter';
+import {PageEvent} from '@angular/material/paginator';
 
 @NgModule({
   imports: [
@@ -29,6 +34,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatListModule,
     MatTooltipModule,
     MatSelectModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MomentDateModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -44,7 +52,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatListModule,
     MatTooltipModule,
     MatSelectModule,
-    MatSnackBarModule
-  ]
+    MatSnackBarModule,
+    MatNativeDateModule,
+    MatDatepickerModule
+  ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

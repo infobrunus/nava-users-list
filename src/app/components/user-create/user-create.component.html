@@ -3,39 +3,71 @@
     <div>
         <mat-form-field>
             <mat-label>You are:</mat-label>
-            <mat-select matNativeControl required [formControl]="selectFormControl" [(ngModel)]="newUser.title">
-                <mat-option *ngFor="let title of titleOptions" [value]="title">
-                    {{ title }}
+            <mat-select matNativeControl required [formControl]="userService.titleFormControl" name="title"
+                [(ngModel)]="newUser.title">
+                <mat-option *ngFor="let title of userService.titleOptions" [value]="title">
+                    {{ title | titlecase }}
                 </mat-option>
-                <mat-error *ngIf="selectFormControl.hasError('required')">
-                    This field is required
-                  </mat-error>
             </mat-select>
+            <mat-error *ngIf="userService.titleFormControl.hasError('required') && userService.titleFormControl.touched">
+                This field is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>First Name</mat-label>
-            <input matInput id="name" type="text" [(ngModel)]="newUser.firstName" name="firstName" required
+            <input matInput id="firstName" type="text" [(ngModel)]="newUser.firstName" name="firstName" required
                 #nameField="ngModel" minlength="3">
             <mat-error *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)">
-                Name must have at least 3 characters.
+                First name must have at least 3 characters.
             </mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Last Name</mat-label>
-            <input matInput id="name" type="text" [(ngModel)]="newUser.lastName" name="lastName" required
+            <input matInput id="lastName" type="text" [(ngModel)]="newUser.lastName" name="lastName" required
                 #nameField="ngModel" minlength="2">
             <mat-error *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)">
-                Name must have at least 3 characters.
+                Last name must have at least 2 characters.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Gender:</mat-label>
+            <mat-select matNativeControl required name="gender" [formControl]="userService.genderFormControl"
+                [(ngModel)]="newUser.gender">
+                <mat-option *ngFor="let gender of userService.genderOptions" [value]="gender">
+                    {{ gender | titlecase }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="userService.genderFormControl.hasError('required') && userService.genderFormControl.touched">
+                This field is required
             </mat-error>
         </mat-form-field>
         <mat-form-field>
             <input matInput id="email" type="email" [(ngModel)]="newUser.email" name="email" required
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" #emailField="ngModel">
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" #emailField="ngModel">
             <mat-label>Email</mat-label>
             <mat-error *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)">
-              Email must be a valid email address.
+                Email must be a valid email address.
             </mat-error>
-          </mat-form-field>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput id="phone" type="text" [maxlength]="15" [(ngModel)]="newUser.phone" name="phone" required
+                mask="(00) 0000-0000?0">
+            <mat-label>Phone Number</mat-label>
+            <mat-error *ngIf="nameField.hasError('required')">
+                Phone must be a valid phone number.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Select your birthdate</mat-label>
+            <input matInput [matDatepicker]="picker" [value]="newUser.dateOfBirth" name="birthDate"
+                [formControl]="userService.birthdateFormControl" [(ngModel)]="newUser.dateOfBirth">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="userService.titleFormControl.hasError('required')">
+                Birthdate is required.
+            </mat-error>
+        </mat-form-field>
     </div>
     <div class="buttons-area">
         <button mat-raised-button color="primary" type="submit" [disabled]="itemForm.invalid">Create</button>

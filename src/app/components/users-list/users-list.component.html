@@ -1,4 +1,6 @@
-<h2>Users List</h2>
+<div class="page-title">
+    <h1>Nava Users List</h1>
+</div>
 
 <div class="d-flex justify-content-end">
     <button mat-raised-button color="primary" routerLink="/create" class="btn-create-item">
@@ -30,7 +32,7 @@
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
             <mat-cell *matCellDef="let user">
-                <button mat-raised-button color="accent" title="View user details" mat-button
+                <button mat-raised-button color="accent" title="View user details" mat-button class="view-user-button"
                     matTooltip="View user details" [routerLink]="['/details', user.id]"><mat-icon aria-hidden="false"
                         aria-label="View icon" fontIcon="remove_red_eye"></mat-icon>
                 </button>
@@ -50,8 +52,8 @@
     </table>
 
 
-    <mat-paginator [length]="totalItems" [pageSize]="itemsPerPage" [pageSizeOptions]="[5, 10, 25, 100]"
-    [showFirstLastButtons]="true" aria-label="Select page">
+    <mat-paginator [length]="totalItems" [pageSize]="itemsPerPage" [pageSizeOptions]="[10, 25]"
+        (page)="handlePageEvent($event)" [showFirstLastButtons]="true" aria-label="Select page">
     </mat-paginator>
 </div>
 

@@ -1,5 +1,6 @@
 $light-gray: #f5f5f5;
 $white-gray: #f4f7f8;
+$light-blue: #4fcad5;
 
 .d-flex {
     display: flex;
@@ -9,47 +10,29 @@ $white-gray: #f4f7f8;
     justify-content: flex-end;
 }
 
-form {
-    text-align: center;
-    max-width: 500px;
-    margin: 10px auto;
-    padding: 10px 20px;
-    background: $white-gray;
-    border-radius: 8px;
-
-    .mat-mdc-form-field {
-        width: 100%;
-        margin: 0 auto;
-        display: block;
-        max-width: 350px;
-    }
-
-    .buttons-area {
-        margin-bottom: 2em;
-        margin-top: 2em;
-        .mdc-button {
-            height: 38px;
-            &:first-child {
-                margin-right: 1em;
-            }
-        }
+.page-title {
+    display: flex;
+    justify-content: center;
+    h1 {
+        font-weight: bold;
     }
 }
 
 .loading-spinner {
     display: flex;
     justify-content: center;
+
     .mat-mdc-progress-spinner {
-        width: 4em!important;
+        width: 4em !important;
     }
 }
 
-form {
+form,
+#userDetais {
     text-align: center;
     max-width: 500px;
     margin: 10px auto;
     padding: 10px 20px;
-    background: $white-gray;
     border-radius: 8px;
 
     .mat-mdc-form-field {
@@ -62,11 +45,18 @@ form {
     .buttons-area {
         margin-bottom: 2em;
         margin-top: 2em;
+
         .mdc-button {
             height: 38px;
+
             &:first-child {
                 margin-right: 1em;
             }
         }
     }
+}
+
+#userDetais,
+form {
+    background: $white-gray;
 }
