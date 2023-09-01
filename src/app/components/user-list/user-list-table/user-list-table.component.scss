@@ -1,0 +1,58 @@
+@import '../../../app.component.scss';
+
+.blurred {
+    filter: blur(5px); /* Aplica o efeito de desfoque */
+  }
+
+.table-area {
+    .progress-bar {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .mat-mdc-progress-bar {
+            width: 300px;
+        }
+    }
+}
+
+#tableListUsers {
+    margin-bottom: 2em;
+
+    &.table-loading {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .view-user-button {
+        background-color: $light-blue;
+    }
+
+    .mat-mdc-row {
+        &:hover {
+            background-color: $light-gray;
+            cursor: pointer;
+        }
+
+        .mat-icon {
+            margin: 0;
+        }
+
+        .mat-mdc-cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}
+
+.btn-create-item {
+    &.mat-mdc-raised-button {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        background-color: #1f7724;
+    }
+}

@@ -6,13 +6,26 @@ $light-blue: #4fcad5;
     display: flex;
 }
 
+.d-block {
+    display: block;
+}
+
+.font-weight-bold {
+    font-weight: 500;
+}
+
 .justify-content-end {
     justify-content: flex-end;
+}
+
+.position-relative {
+    position: relative;
 }
 
 .page-title {
     display: flex;
     justify-content: center;
+
     h1 {
         font-weight: bold;
     }
@@ -26,6 +39,7 @@ $light-blue: #4fcad5;
         width: 4em !important;
     }
 }
+
 
 form,
 #userDetais {

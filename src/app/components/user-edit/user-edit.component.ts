@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../models/user.interface';
 import { UserService } from '../../services/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -29,6 +28,7 @@ export const MY_DATE_FORMATS = {
   ]
 })
 export class UserEditComponent implements OnInit, OnDestroy {
+
   user: User = {
     id: '',
     title: '',
@@ -44,31 +44,73 @@ export class UserEditComponent implements OnInit, OnDestroy {
   isFormInitializing: Boolean = true;
   private destroy$ = new Subject<void>();
   private updateUserSubject = new Subject<User>();
+  userForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, public  userService: UserService) { }
+  constructor(private route: ActivatedRoute, public userService: UserService, private formBuilder: FormBuilder) {
+    this.userForm = this.formBuilder.group({
+      title: [this.user.title, Validators.required],
+      firstName: [this.user.firstName, [Validators.required, Validators.minLength(3)]],
+      lastName: [this.user.lastName, [Validators.required, Validators.minLength(3)]],
+      phone: [this.user.phone, [Validators.required, Validators.minLength(3)]],
+      gender: [this.user.gender, [Validators.required]],
+      dateOfBirth: [this.user.dateOfBirth, [Validators.required]]
+    });
+  }
 
   ngOnInit(): void {
-
     this.route.params.subscribe(params => {
       const userId = params['id'];
       this.userService.getUserById(userId)
-        .then(user => {
-          this.user = user;
-          this.isLoaded = true;
-        })
-        .catch(error => {
-          console.error('User not found:', error);
+        .subscribe({
+          next: user => {
+            this.user = user;
+            this.userForm.patchValue({
+              id: user.id,
+              title: user.title,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              gender: user.gender,
+              phone: user.phone,
+              dateOfBirth: user.dateOfBirth
+            });
+
+            this.isLoaded = true;
+          },
+          error: error => {
+            console.error('User not found:', error);
+            this.isLoaded = true;
+          }
         });
     });
 
+    this.userForm.valueChanges
+      .pipe(debounceTime(500), takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (!this.isFormInitializing) {
+          const updatedUser: User = {
+            id: this.user.id,
+            title: this.userForm.get('title')!.value,
+            firstName: this.userForm.get('firstName')!.value,
+            lastName: this.userForm.get('lastName')!.value,
+            email: this.user.email,
+            gender: this.userForm.get('gender')!.value,
+            phone: this.userForm.get('phone')!.value,
+            dateOfBirth: this.userForm.get('dateOfBirth')!.value
+          };
+
+          if (this.userForm.valid) {
+            this.updateUserSubject.next(updatedUser);
+          }
+        } else {
+          this.isFormInitializing = false;
+        }
+      });
+
     this.updateUserSubject
       .pipe(debounceTime(500), takeUntil(this.destroy$))
-      .subscribe((updatedUser) => {
-        if (!this.isFormInitializing) {
-          this.updateUser(updatedUser);
-        } else {
-          this.isFormInitializing = false; 
-        }
+      .subscribe((updatedUser: User) => {
+        this.updateUser(updatedUser);
       });
 
   }
@@ -78,20 +120,18 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onDateChange(type: string, event: MatDatepickerInputEvent<Date>) {
-    let newDateFormattedISO = (event.value!).toISOString();
-    this.user.dateOfBirth = newDateFormattedISO;
-    this.updateUser(this.user);
-  }
+  updateUser(updatedUser: User): void {
 
-  onUserChange(updatedUser: User): void {
-    //Using debounce to prevent too many requests to server
-    this.updateUserSubject.next(this.user);
-  }
-
-  async updateUser(updatedUser: User): Promise<void> {
-    debugger
-    await this.userService.updateUser(updatedUser);
+    this.userService.updateUser(updatedUser)
+      .subscribe({
+        next: success => {
+          this.userService.openSnackBar('User data updated successfully!');
+        },
+        error: error => {
+          console.error('Failed to update the user:', error);
+          this.isLoaded = true;
+        }
+      });
   }
 
 }

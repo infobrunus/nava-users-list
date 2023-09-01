@@ -1,0 +1,9 @@
+<mat-card class="search-user-card">
+    <mat-card-content>
+        <mat-card-title>Search User</mat-card-title>
+        <mat-form-field class="example-full-width">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Ex: Bruno" [(ngModel)]="searchValue" (ngModelChange)="onSearchInputChange()">
+        </mat-form-field>
+    </mat-card-content>
+</mat-card>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from '../../models/user.interface';
 import { UserService } from '../../services/user.service';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
@@ -36,14 +37,22 @@ export class UserCreateComponent {
     dateOfBirth: ''
   };
 
-  constructor(public  userService: UserService) { }
+  constructor(public userService: UserService, private router: Router) { }
 
-  async onSubmit(): Promise<void> {
-    try {
-      await this.userService.createUser(this.newUser);
-    } catch (error) {
-      console.error('Error on saving new user:', error);
-    }
+  onSubmit(): void {
+    this.userService.createUser(this.newUser)
+      .subscribe({
+        next: user => {
+          this.userService.openSnackBar('User has been created successfully!');
+          this.router.navigate(['/list']);
+        },
+        error: error => {
+          const errorMessage = error.error.data.email || 'Error on create user';
+          this.userService.openSnackBar(errorMessage);
+          console.error('Error on create user:', error);
+        }
+      });
+
   }
 
 }

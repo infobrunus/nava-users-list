@@ -1,0 +1,3 @@
+<app-user-list-header [(toggleValue)]="toggleValue"></app-user-list-header>
+<app-search-user (searchValueChange)="onSearchValueChange($event)"></app-search-user>
+<app-user-list-table [toggleValue]="toggleValue" [searchValue]="searchValue"></app-user-list-table>

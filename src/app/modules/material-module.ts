@@ -15,9 +15,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateModule } from '@angular/material-moment-adapter';
-import {PageEvent} from '@angular/material/paginator';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -36,7 +37,10 @@ import {PageEvent} from '@angular/material/paginator';
     MatSelectModule,
     MatNativeDateModule,
     MatDatepickerModule,
-    MomentDateModule
+    MomentDateModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    MatSlideToggleModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -54,7 +58,10 @@ import {PageEvent} from '@angular/material/paginator';
     MatSelectModule,
     MatSnackBarModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatProgressBarModule,
+    MatToolbarModule,
+    MatSlideToggleModule
   ],
 })
 export class MaterialModule { }

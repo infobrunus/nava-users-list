@@ -8,3 +8,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding-top: 2em;
     padding-bottom: 2em;
   }
+
+  .mdc-form-field > label {
+    color: #fff !important;
+}

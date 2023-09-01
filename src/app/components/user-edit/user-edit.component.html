@@ -1,67 +1,56 @@
-<form #itemForm="ngForm">
+<form [formGroup]="userForm">
     <h2>Edit Item</h2>
     <div>
         <mat-form-field>
             <mat-label>You are:</mat-label>
-            <mat-select matNativeControl required [formControl]="userService.titleFormControl" [(ngModel)]="user.title" name="title"
-                (ngModelChange)="onUserChange(user)">
+            <mat-select matNativeControl required formControlName="title">
                 <mat-option *ngFor="let title of userService.titleOptions" [value]="title">
                     {{ title | titlecase }}
                 </mat-option>
-                <mat-error *ngIf="userService.titleFormControl.hasError('required') && userService.titleFormControl.touched">
-                    This field is required
-                </mat-error>
             </mat-select>
+            <mat-error *ngIf="userForm.get('title')?.hasError('required') && userForm.get('title')?.touched">
+                This field is required
+            </mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>First Name</mat-label>
-            <input matInput id="name" type="text" [(ngModel)]="user.firstName" name="firstName" required
-                (ngModelChange)="onUserChange(user)" #nameField="ngModel" minlength="3">
-            <mat-error *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)">
+            <input matInput id="firstName" type="text" formControlName="firstName" required minlength="3">
+            <mat-error *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
                 Name must have at least 3 characters.
             </mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Last Name</mat-label>
-            <input matInput id="name" type="text" [(ngModel)]="user.lastName" name="lastName" required
-                (ngModelChange)="onUserChange(user)" #nameField="ngModel" minlength="2">
-            <mat-error *ngIf="nameField.invalid && (nameField.dirty || nameField.touched)">
+            <input matInput id="lastName" type="text" formControlName="lastName" required minlength="2">
+            <mat-error *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
                 Name must have at least 3 characters.
             </mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Gender:</mat-label>
-            <mat-select matNativeControl required [(ngModel)]="user.gender" name="gender" [formControl]="userService.genderFormControl"
-                (ngModelChange)="onUserChange(user)">
+            <mat-select matNativeControl required formControlName="gender">
                 <mat-option *ngFor="let gender of userService.genderOptions" [value]="gender">
                     {{ gender | titlecase }}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="userService.genderFormControl.hasError('required') && userService.genderFormControl.touched">
+            <mat-error *ngIf="userForm.get('gender')?.hasError('required') && userForm.get('gender')?.touched">
                 This field is required
             </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput id="email" type="email" [(ngModel)]="user.email" name="email" required
-                (ngModelChange)="onUserChange(user)" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                #emailField="ngModel">
+            <input matInput id="email" formControlName="email" [disabled]="true" [value]="user.email">
             <mat-label>Email</mat-label>
-            <mat-error *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)">
-                Email must be a valid email address.
-            </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput id="phone" type="text" [maxlength]="15" [(ngModel)]="user.phone" name="phone" required
-                (ngModelChange)="onUserChange(user)" mask="(00) 0000-0000?0">
+            <input matInput id="phone" type="text" maxlength="15" formControlName="phone" [value]="user.phone | phoneNumber" mask="(00) 0000-0000?0">
             <mat-label>Phone Number</mat-label>
-            <mat-error *ngIf="nameField.hasError('required')">
+            <mat-error *ngIf="userForm.get('phone')?.hasError('required')">
                 Phone must be a valid phone number.
             </mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Select your birthdate</mat-label>
-            <input matInput [matDatepicker]="picker" [value]="user.dateOfBirth" [(ngModel)]="user.dateOfBirth"
-            [formControl]="userService.birthdateFormControl" name="birthDate" (dateChange)="onDateChange('change', $event)">
+            <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" name="dateOfBirth" [value]="user.dateOfBirth">
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>

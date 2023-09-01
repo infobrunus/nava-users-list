@@ -13,20 +13,27 @@ export class UserDetailsComponent implements OnInit {
   user: User | null = null;
   isLoaded: Boolean = false;
 
-  constructor(private route: ActivatedRoute, private userService: UserService) { }
+  constructor(private route: ActivatedRoute, private userService: UserService) {
+  }
+
+  getUser(userId: string) {
+    this.userService.getUserById(userId)
+      .subscribe({
+        next: user => {
+          this.user = user;
+          this.isLoaded = true;
+        },
+        error: error => {
+          console.error('User not found:', error);
+          this.isLoaded = true;
+        }
+      });
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const userId = params['id'];
-      this.userService.getUserById(userId)
-        .then(user => {
-          this.user = user;
-          this.isLoaded = true;
-        })
-        .catch(error => {
-          console.error('User not found:', error);
-          this.isLoaded = true;
-        });
+      this.getUser(userId);
     });
   }
 

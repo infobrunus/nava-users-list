@@ -1,0 +1,12 @@
+@import '../../app.component.scss';
+
+.search-user-card {
+    &.mat-mdc-card {
+        margin-top: 1em;
+    }
+
+    .mat-mdc-form-field {
+        margin-top: 1em;
+        width: 25%;
+    }
+}
